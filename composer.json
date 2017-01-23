@@ -1,0 +1,22 @@
+{
+    "name": "applyit/app-server",
+    "description": "PHP app server based on react/http for miroservices",
+    "type": "library",
+    "require": {
+        "roave/security-advisories": "dev-master",
+        "react/http": "0.4.*",
+        "silex/silex": "^2.0"
+    },
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Dmitry Taviev",
+            "email": "dmitry.taviev@applyit.lv"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "AppServer": "src/"
+        }
+    }
+}
