@@ -17,6 +17,7 @@ use React\Http\Response;
 use React\Http\Server as Http;
 use React\Socket\Server as Socket;
 use Silex\Application;
+use Silex\Provider\MonologServiceProvider;
 
 class BasicServer implements Server
 {
@@ -28,7 +29,7 @@ class BasicServer implements Server
 
     public function serve(Application $application, int $port = self::DEFAULT_PORT, string $host = self::DEFAULT_HOST): void
     {
-        $this->servedApplication = $application;
+        $this->prepareForServing($application);
         $loop = Factory::create();
         $socket = new Socket($loop);
         $http = new Http($socket);
@@ -37,6 +38,22 @@ class BasicServer implements Server
         });
         $socket->listen($port, $host);
         $loop->run();
+    }
+
+    protected function prepareForServing(Application $application): void
+    {
+        $application->register(new MonologServiceProvider(), [
+            'monolog.use_error_handler' => true,
+            'monolog.logfile' => '/dev/stderr'
+        ]);
+        $application->before(function(\Symfony\Component\HttpFoundation\Request $request) {
+            if ($request->headers->get('Content-Type') === 'application/json') {
+                $decoded = json_decode($request->getContent(), true);
+                $request->request->replace(is_array($decoded) ? $decoded : []);
+            }
+        });
+
+        $this->servedApplication = $application;
     }
 
     protected function handleRequest(Request $request, Response $response): void
