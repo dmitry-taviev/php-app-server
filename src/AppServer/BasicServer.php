@@ -42,6 +42,7 @@ class BasicServer implements Server
 
     protected function prepareForServing(Application $application): void
     {
+        \Symfony\Component\Debug\ErrorHandler::register();
         $application->register(new MonologServiceProvider(), [
             'monolog.use_error_handler' => true,
             'monolog.logfile' => '/dev/stderr'
