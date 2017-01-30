@@ -18,6 +18,7 @@ use React\Http\Server as Http;
 use React\Socket\Server as Socket;
 use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
+use Silex\Provider\ServiceControllerServiceProvider;
 
 class BasicServer implements Server
 {
@@ -53,6 +54,7 @@ class BasicServer implements Server
 
     protected function prepareForServing(Application $application): void
     {
+        $application->register(new ServiceControllerServiceProvider());
         $application->register(new MonologServiceProvider(), [
             'monolog.use_error_handler' => true,
             'monolog.logfile' => 'php://stdout'
