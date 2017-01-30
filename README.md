@@ -21,7 +21,7 @@ Fast, lightweight, easy-to-use application server written in pure php. Uses reac
 ##Example usage:##
 *  Inside your projects directory run the following command: 
 ```
-composer require applyit/app-server v1.0.*
+composer require applyit/app-server:v1.0.*
 ```
 * Create a .php file in your projects directory with the following content:
 ```
