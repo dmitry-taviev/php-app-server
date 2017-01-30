@@ -17,8 +17,6 @@ use React\Http\Response;
 use React\Http\Server as Http;
 use React\Socket\Server as Socket;
 use Silex\Application;
-use Silex\Provider\MonologServiceProvider;
-use Silex\Provider\ServiceControllerServiceProvider;
 
 class BasicServer implements Server
 {
@@ -37,7 +35,7 @@ class BasicServer implements Server
 
     public function serve(Application $application, int $port = self::DEFAULT_PORT, string $host = self::DEFAULT_HOST): void
     {
-        $this->prepareForServing($application);
+        $this->servedApplication = $application;
         $loop = Factory::create();
         $socket = new Socket($loop);
         $http = new Http($socket);
@@ -50,23 +48,6 @@ class BasicServer implements Server
         });
         $socket->listen($port, $host);
         $loop->run();
-    }
-
-    protected function prepareForServing(Application $application): void
-    {
-        $application->register(new ServiceControllerServiceProvider());
-        $application->register(new MonologServiceProvider(), [
-            'monolog.use_error_handler' => true,
-            'monolog.logfile' => 'php://stdout'
-        ]);
-        $application->before(function(\Symfony\Component\HttpFoundation\Request $request) {
-            if ($request->headers->get('Content-Type') === 'application/json') {
-                $decoded = json_decode($request->getContent(), true);
-                $request->request->replace(is_array($decoded) ? $decoded : []);
-            }
-        });
-
-        $this->servedApplication = $application;
     }
 
     protected function handleRequest(Request $request, Response $response): void
@@ -96,7 +77,9 @@ class BasicServer implements Server
         } else {
             $body = json_encode(['message' => 'internal server error']);
         }
-        $this->servedApplication['monolog']->error($message);
+        if ($this->servedApplication->offsetExists('monolog')) {
+            $this->servedApplication['monolog']->error($message);
+        }
         $response->writeHead(500, [
             'Content-Type' => 'application/json',
             'Content-Length' => strlen($body)
