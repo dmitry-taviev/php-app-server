@@ -2,7 +2,7 @@
 ##WTF?##
 Fast, lightweight, easy-to-use application server written in pure php. Uses reactphp/http and libevent of any kind.
 ##Why?##
-* Bla bla bla microservices bla bla bla cloud bla bla bla fault-tolerance bla bla bla stateless...
+* Bla bla bla **microservices** bla bla bla **cloud** bla bla bla **fault-tolerance** bla bla bla **reactive** bla bla bla **stateless**...
 * This thing makes setting up & running any Silex backend api as easy as 2 lines of code.
 * We get rid of dependencies such as nginx(or any other webserver) and php-fpm, thus easier setup & thinner docker images.
 * More flexible since you add only what you really need.
@@ -12,6 +12,12 @@ Fast, lightweight, easy-to-use application server written in pure php. Uses reac
 ##Bonus content includes:##
 * Properly configured AppServer\Application that you can use instead of the default Silex one.
 * AppServer\ApplicationComponent to help you in vertically partitioning your app(hope you know what that means). 
+##TODO:##
+* Fault-tolerance(like Hystrix)
+* Healthchecks
+* Sample Dockerfile
+* HATEOAS
+* ???
 ##Example usage:##
 *  Inside your projects directory run the following command: 
 ```
