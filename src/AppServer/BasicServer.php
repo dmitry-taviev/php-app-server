@@ -27,6 +27,13 @@ class BasicServer implements Server
      */
     protected $servedApplication;
 
+    protected $debugging = false;
+
+    public function __construct(bool $debugging = false)
+    {
+        $this->debugging = $debugging;
+    }
+
     public function serve(Application $application, int $port = self::DEFAULT_PORT, string $host = self::DEFAULT_HOST): void
     {
         $this->prepareForServing($application);
@@ -34,7 +41,11 @@ class BasicServer implements Server
         $socket = new Socket($loop);
         $http = new Http($socket);
         $http->on('request', function(Request $request, Response $response) {
-            $this->handleRequest($request, $response);
+            try {
+                $this->handleRequest($request, $response);
+            } catch (\Exception $exception) {
+                $this->handleException($exception, $response);
+            }
         });
         $socket->listen($port, $host);
         $loop->run();
@@ -44,7 +55,7 @@ class BasicServer implements Server
     {
         $application->register(new MonologServiceProvider(), [
             'monolog.use_error_handler' => true,
-            'monolog.logfile' => '/dev/stderr'
+            'monolog.logfile' => 'php://stdout'
         ]);
         $application->before(function(\Symfony\Component\HttpFoundation\Request $request) {
             if ($request->headers->get('Content-Type') === 'application/json') {
@@ -58,7 +69,11 @@ class BasicServer implements Server
 
     protected function handleRequest(Request $request, Response $response): void
     {
-        $contentLength = (int) $request->getHeaders()['Content-Length'];
+        try {
+            $contentLength = (int) $request->getHeaders()['Content-Length'];
+        } catch (\Exception $e) {
+            $contentLength = 0;
+        }
         $dataReceived = '';
         $totalDataLength = 0;
         $request->on('data', function(string $data) use (&$dataReceived, &$totalDataLength, $contentLength, $request, $response) {
@@ -70,10 +85,33 @@ class BasicServer implements Server
         });
     }
 
+    protected function handleException(\Exception $exception, Response $response): void
+    {
+        $message = $exception->getMessage();
+        if ($this->debugging) {
+            echo $exception;
+            $body = json_encode(['message' => $message]);
+        } else {
+            $body = json_encode(['message' => 'internal server error']);
+        }
+        $this->servedApplication['monolog']->error($message);
+        $response->writeHead(500, [
+            'Content-Type' => 'application/json',
+            'Content-Length' => strlen($body)
+        ]);
+        $response->end($body);
+    }
+
     protected function handleData(string $data, Request $request, Response $response): void
     {
         $input = $this->createSymfonyRequest($data, $request);
-        $output = $this->servedApplication->handle($input);
+        try {
+            $output = $this->servedApplication->handle($input, null, false);
+        } catch (\Exception $exception) {
+            $this->handleException($exception, $response);
+            $request->close();
+            return;
+        }
         $this->servedApplication->terminate($input, $output);
         $response->writeHead(
             $output->getStatusCode(),
