@@ -19,6 +19,8 @@ Fast, lightweight, easy-to-use application server written in pure php. Uses reac
 * HATEOAS
 * ???
 ##Benchmarks:##
+Performed on the [boilerplate app](https://bitbucket.org/apply/react-silex-example).
+
 1000 threads sending 10 requests concurrently with a delay of 0.2s - just to give you an idea of its capabilities.
 ```
 docker run --rm -t yokogawa/siege -c1000 -r10 -d0.2 http://myip:1337/persons
