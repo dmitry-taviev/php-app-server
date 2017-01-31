@@ -39,6 +39,7 @@ Failed transactions:	         124
 Longest transaction:	       16.49
 Shortest transaction:	        0.00
 ```
+During siege at it's peak it reached 97% of 1 CPU and kept memory usage at around 7MiB.
 
 ##Example usage:##
 *  Inside your projects directory run the following command: 
