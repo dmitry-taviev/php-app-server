@@ -1,6 +1,6 @@
 # README #
 ##WTF?##
-Fast, lightweight, easy-to-use application server written in pure php. Uses reactphp/http and eventloop(libevent or similar).
+Fast, lightweight, easy-to-use application server written in pure php. Uses reactphp/http and eventloop(based on php generators or libevent).
 ##Why?##
 * Bla bla bla **microservices** bla bla bla **cloud** bla bla bla **fault-tolerance** bla bla bla **reactive** bla bla bla **stateless**...
 * This thing makes setting up & running any Silex backend api as easy as 2 lines of code.
