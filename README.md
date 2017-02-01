@@ -1,6 +1,6 @@
 # README #
 ##WTF?##
-Fast, lightweight, easy-to-use application server written in pure php. Uses reactphp/http and libevent of any kind.
+Fast, lightweight, easy-to-use application server written in pure php. Uses reactphp/http and eventloop(based on php generators or libevent).
 ##Why?##
 * Bla bla bla **microservices** bla bla bla **cloud** bla bla bla **fault-tolerance** bla bla bla **reactive** bla bla bla **stateless**...
 * This thing makes setting up & running any Silex backend api as easy as 2 lines of code.
@@ -18,10 +18,35 @@ Fast, lightweight, easy-to-use application server written in pure php. Uses reac
 * Sample Dockerfile
 * HATEOAS
 * ???
+##Benchmarks:##
+Performed on the [boilerplate app](https://bitbucket.org/apply/react-silex-example).
+
+1000 threads sending 10 requests concurrently with a delay of 0.2s - just to give you an idea of its capabilities.
+```
+docker run --rm -t yokogawa/siege -c1000 -r10 -d0.2 http://myip:1337/persons
+** SIEGE 3.0.5
+** Preparing 1000 concurrent users for battle.
+The server is now under siege..      done.
+
+Transactions:		       19752 hits
+Availability:		       99.38 %
+Elapsed time:		       19.89 secs
+Data transferred:	        2.67 MB
+Response time:		        0.46 secs
+Transaction rate:	      993.06 trans/sec
+Throughput:		        0.13 MB/sec
+Concurrency:		      456.17
+Successful transactions:       19801
+Failed transactions:	         124
+Longest transaction:	       16.49
+Shortest transaction:	        0.00
+```
+During siege at it's peak it reached 97% of 1 CPU and kept memory usage at around 7MiB.
+
 ##Example usage:##
 *  Inside your projects directory run the following command: 
 ```
-composer require applyit/app-server v1.0.*
+composer require applyit/app-server:v1.0.*
 ```
 * Create a .php file in your projects directory with the following content:
 ```
