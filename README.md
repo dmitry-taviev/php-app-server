@@ -23,22 +23,22 @@ Performed on the [boilerplate app](https://bitbucket.org/apply/react-silex-examp
 
 1000 threads sending 10 requests concurrently with a delay of 0.2s - just to give you an idea of its capabilities.
 ```
-docker run --rm -t yokogawa/siege -c1000 -r10 -d0.2 http://myip:1337/persons
+docker run --rm -t yokogawa/siege -c1000 -r10 -d0.2 http://myip:1337/persons/
 ** SIEGE 3.0.5
 ** Preparing 1000 concurrent users for battle.
 The server is now under siege..      done.
 
-Transactions:		       19752 hits
-Availability:		       99.38 %
-Elapsed time:		       19.89 secs
-Data transferred:	        2.67 MB
-Response time:		        0.46 secs
-Transaction rate:	      993.06 trans/sec
-Throughput:		        0.13 MB/sec
-Concurrency:		      456.17
-Successful transactions:       19801
-Failed transactions:	         124
-Longest transaction:	       16.49
+Transactions:		       10000 hits
+Availability:		      100.00 %
+Elapsed time:		       10.16 secs
+Data transferred:	        0.02 MB
+Response time:		        0.41 secs
+Transaction rate:	      984.25 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		      408.22
+Successful transactions:       10000
+Failed transactions:	           0
+Longest transaction:	        7.44
 Shortest transaction:	        0.00
 ```
 During siege at it's peak it reached 97% of 1 CPU and kept memory usage at around 7MiB.
