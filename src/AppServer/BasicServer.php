@@ -52,10 +52,10 @@ class BasicServer implements Server
 
     protected function handleRequest(Request $request, Response $response): void
     {
-        try {
-            $contentLength = (int) $request->getHeaders()['Content-Length'];
-        } catch (\Exception $e) {
+        if ($request->getMethod() === 'GET') {
             $contentLength = 0;
+        } else {
+            $contentLength = (int) $request->getHeaders()['Content-Length'];
         }
         $dataReceived = '';
         $totalDataLength = 0;
