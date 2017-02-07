@@ -9,12 +9,18 @@
 namespace AppServer;
 
 
+use Neomerx\JsonApi\Encoder\EncoderOptions;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 class Application extends \Silex\Application
 {
+
+    /**
+     * @var EncoderOptions
+     */
+    protected $encoderOptions;
 
     public function __construct(array $values = array())
     {
@@ -30,6 +36,15 @@ class Application extends \Silex\Application
                 $request->request->replace(is_array($decoded) ? $decoded : []);
             }
         });
+        $this->encoderOptions = new EncoderOptions(
+            JSON_UNESCAPED_UNICODE |
+            JSON_PRESERVE_ZERO_FRACTION
+        );
+    }
+
+    public function encoder(array $schemas = []): Encoder
+    {
+        return Encoder::instance($schemas, $this->encoderOptions);
     }
 
 }

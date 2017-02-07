@@ -6,7 +6,8 @@
         "roave/security-advisories": "dev-master",
         "react/http": "0.4.*",
         "silex/silex": "^2.0",
-        "monolog/monolog": "^1.22"
+        "monolog/monolog": "^1.22",
+        "neomerx/json-api": "^0.8.11"
     },
     "license": "proprietary",
     "authors": [
