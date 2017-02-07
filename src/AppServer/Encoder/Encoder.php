@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace AppServer;
+namespace AppServer\Encoder;
 
 
 use Neomerx\JsonApi\Contracts\Document\ErrorInterface;
