@@ -1,4 +1,5 @@
 # README #
+##Latest stable: v1.1##
 ##WTF?##
 Fast, lightweight, easy-to-use application server written in pure php. Uses reactphp/http and eventloop(based on php generators or libevent).
 ##Why?##
@@ -16,7 +17,7 @@ Fast, lightweight, easy-to-use application server written in pure php. Uses reac
 * Fault-tolerance(like Hystrix)
 * Healthchecks
 * Sample Dockerfile
-* HATEOAS
+* json-api support
 * ???
 ##Benchmarks:##
 Performed on the [boilerplate app](https://bitbucket.org/apply/react-silex-example).
@@ -46,7 +47,7 @@ During siege at it's peak it reached 97% of 1 CPU and kept memory usage at aroun
 ##Example usage:##
 *  Inside your projects directory run the following command: 
 ```
-composer require applyit/app-server:v1.0.*
+composer require applyit/app-server:v1.*
 ```
 * Create a .php file in your projects directory with the following content:
 ```
