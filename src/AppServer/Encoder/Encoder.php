@@ -22,7 +22,7 @@ class Encoder extends \Neomerx\JsonApi\Encoder\Encoder
         'Content-Type' => 'application/json'
     ];
 
-    public function response(iterable $data): Response
+    public function response(array $data = []): Response
     {
         return $this->createResponse($this->encodeData($data));
     }
