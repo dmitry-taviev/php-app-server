@@ -1,5 +1,5 @@
 # README #
-##Latest stable: v1.1##
+##Latest stable: v1.2##
 ##WTF?##
 Fast, lightweight, easy-to-use application server written in pure php. Uses reactphp/http and eventloop(based on php generators or libevent).
 ##Why?##
